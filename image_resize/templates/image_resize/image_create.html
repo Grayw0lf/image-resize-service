@@ -1,0 +1,13 @@
+{% extends 'image_resize/base.html' %}
+
+{% block title %}{{ block.super }} - Загрузить{% endblock %}
+
+{% block content %}
+    <a href="/">Назад к списку</a>
+    <h1>Новое изображение</h1>
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ ImageCreateForm.as_p }}
+        <input type="submit" value="Отправить">
+    </form>
+{% endblock %}

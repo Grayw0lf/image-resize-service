@@ -1,0 +1,14 @@
+{% extends 'image_resize/base.html' %}
+
+{% block title %}{{ block.super }} - {{ image.filename }}{% endblock %}
+
+{% block content %}
+    <a href="/">Назад к списку</a>
+    <h1>{{ image.filename }}</h1>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ ImageResizeForm.as_p }}
+        <input type="submit" value="Отправить">
+    </form>
+    <img src="{{ image.image_name.url }}" alt="{{ image.filename }}">
+{% endblock %}

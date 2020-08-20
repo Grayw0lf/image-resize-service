@@ -1,0 +1,10 @@
+*.pyc
+*~
+__pycache__
+venv
+/static
+/media
+/.idea
+.DS_Store
+db.dqlite3
+/templates
