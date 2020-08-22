@@ -2,4 +2,7 @@ from django.contrib import admin
 from .models import Image
 
 
-admin.site.register(Image)
+@admin.register(Image)
+class ImageAdmin(admin.ModelAdmin):
+    pass
+    # fields = ['image_name']

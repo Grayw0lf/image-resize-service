@@ -7,8 +7,12 @@
     <h1>{{ image.filename }}</h1>
     <form action="" method="post">
         {% csrf_token %}
-        {{ ImageResizeForm.as_p }}
+        <table>
+            {{ ImageResizeForm.as_table }}
+        </table>
         <input type="submit" value="Отправить">
     </form>
+    <br>
+    <p>{{ image_id }}</p>
     <img src="{{ image.image_name.url }}" alt="{{ image.filename }}">
 {% endblock %}

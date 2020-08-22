@@ -4,9 +4,9 @@ from urllib.request import urlretrieve
 from django.shortcuts import render, HttpResponseRedirect
 from django.urls import reverse
 from django.core.files import File
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
-from .forms import ImageCreateForm, ImageResizeForm
+from .forms import ImageCreateForm, ImageResizeForm, ResizeForm
 from .models import Image
 
 
@@ -16,14 +16,16 @@ class ImageListView(ListView):
     template_name = 'image_resize/image_list.html'
 
 
-class ImageDetailView(DetailView):
+class ImageDetailView(UpdateView):
     model = Image
+    form_class = ResizeForm
     context_object_name = 'image'
     template_name = 'image_resize/image_detail.html'
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data()
-        context['ImageResizeForm'] = ImageResizeForm
+        context = super().get_context_data(**kwargs)
+        context['ImageResizeForm'] = ResizeForm
+        context['image_id'] = Image.objects.get(pk=self.kwargs['pk']).pk
         return context
 
 

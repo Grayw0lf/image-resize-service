@@ -7,7 +7,9 @@
     <h1>Новое изображение</h1>
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ ImageCreateForm.as_p }}
+        <table>
+            {{ ImageCreateForm.as_table }}
+        </table>
         <input type="submit" value="Отправить">
     </form>
 {% endblock %}

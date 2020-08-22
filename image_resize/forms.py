@@ -1,4 +1,5 @@
 from django import forms
+from .models import Image
 
 
 class ImageCreateForm(forms.Form):
@@ -20,9 +21,9 @@ class ImageCreateForm(forms.Form):
 
 class ImageResizeForm(forms.Form):
     width = forms.IntegerField(label='Ширина', required=False,
-                               widget=forms.NumberInput(attrs={'class': 'form-control'}))
+                               widget=forms.NumberInput())
     height = forms.IntegerField(label='Высота', required=False,
-                                widget=forms.NumberInput(attrs={'class': 'form-control'}))
+                                widget=forms.NumberInput())
 
     def clean(self):
         error_string = ''
@@ -45,3 +46,9 @@ class ImageResizeForm(forms.Form):
 
             if error_string != '':
                 raise forms.ValidationError(error_string)
+
+
+class ResizeForm(forms.ModelForm):
+    class Meta:
+        model = Image
+        fields = ['image_width', 'image_height']
