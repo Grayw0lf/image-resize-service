@@ -1,9 +1,11 @@
 import os
 from urllib.request import urlretrieve
+from sorl.thumbnail import get_thumbnail
 
 from django.shortcuts import render, HttpResponseRedirect
 from django.urls import reverse
 from django.core.files import File
+from django.core.files.base import ContentFile
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
 from .forms import ImageCreateForm, ImageResizeForm, ResizeForm
@@ -27,6 +29,14 @@ class ImageDetailView(UpdateView):
         context['ImageResizeForm'] = ResizeForm
         context['image_id'] = Image.objects.get(pk=self.kwargs['pk']).pk
         return context
+
+    def form_valid(self, form):
+        image_width = form.cleaned_data["image_width"]
+        image_height = form.cleaned_data["image_height"]
+        image = Image.objects.get(pk=self.kwargs['pk'])
+        resized = get_thumbnail(image, f"{image_width}x{image_height}")
+        image.save(resized.name, ContentFile(resized.read()), True)
+        return super().form_valid(form)
 
 
 class ImageCreateView(CreateView):
