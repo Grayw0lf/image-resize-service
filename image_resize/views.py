@@ -33,9 +33,9 @@ class ImageDetailView(UpdateView):
     def form_valid(self, form):
         image_width = form.cleaned_data["image_width"]
         image_height = form.cleaned_data["image_height"]
-        image = Image.objects.get(pk=self.kwargs['pk'])
+        image = Image.objects.get(pk=self.kwargs['pk']).image_name
         resized = get_thumbnail(image, f"{image_width}x{image_height}")
-        image.save(resized.name, ContentFile(resized.read()), True)
+        image.save(image.name, ContentFile(resized.read()), True)
         return super().form_valid(form)
 
 
