@@ -5,4 +5,3 @@ from .models import Image
 @admin.register(Image)
 class ImageAdmin(admin.ModelAdmin):
     pass
-    # fields = ['image_name']
