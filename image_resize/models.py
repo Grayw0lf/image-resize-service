@@ -2,11 +2,12 @@ from pathlib import Path
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 from django.db import models
-from sorl.thumbnail import ImageField as SorlImageField, get_thumbnail
+from sorl.thumbnail import ImageField as SorlImageField
+from .storage import OverwriteStorage
 
 
 class Image(models.Model):
-    image_name = SorlImageField(_('Изображение'), upload_to='images',
+    image_name = SorlImageField(_('Изображение'), storage=OverwriteStorage(), upload_to='images',
                                 width_field='image_width',
                                 height_field='image_height',
                                 blank=True, null=True
@@ -26,5 +27,3 @@ class Image(models.Model):
 
     def get_absolute_url(self):
         return reverse('image_resize:image_update', args=[self.pk])
-
-

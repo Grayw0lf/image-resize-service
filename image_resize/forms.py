@@ -1,4 +1,5 @@
 from django import forms
+from django.utils.translation import gettext_lazy as _
 from .models import Image
 
 
@@ -19,36 +20,11 @@ class ImageCreateForm(forms.Form):
             raise forms.ValidationError('Заполненным должно быть хотя бы одно поле')
 
 
-class ImageResizeForm(forms.Form):
-    width = forms.IntegerField(label='Ширина', required=False,
-                               widget=forms.NumberInput())
-    height = forms.IntegerField(label='Высота', required=False,
-                                widget=forms.NumberInput())
-
-    def clean(self):
-        error_string = ''
-
-        width = self.data.get('width', False)
-        height = self.data.get('height', False)
-
-        if any([width, height]):
-            try:
-                res = int(width)
-            except:
-                if width != '':
-                    error_string += '"Ширина" должна быть числовым значением. '
-
-            try:
-                res = int(height)
-            except:
-                if height != '':
-                    error_string += '"Высота" должна быть числовым значением. '
-
-            if error_string != '':
-                raise forms.ValidationError(error_string)
-
-
 class ResizeForm(forms.ModelForm):
     class Meta:
         model = Image
         fields = ['image_width', 'image_height']
+        labels = {
+            'image_width': _('Ширина'),
+            'image_height': _('Высота'),
+        }

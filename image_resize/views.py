@@ -23,11 +23,15 @@ class ImageUpdateView(UpdateView):
     form_class = ResizeForm
     context_object_name = 'image'
     template_name = 'image_resize/image_update.html'
+    success_url = ''
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['ImageResizeForm'] = ResizeForm
-        context['image_id'] = Image.objects.get(pk=self.kwargs['pk']).pk
+        image = Image.objects.get(pk=self.kwargs['pk'])
+        width = image.image_width
+        height = image.image_height
+        context['ImageResizeForm'] = ResizeForm(initial={'image_width': width,
+                                                         'image_height': height})
         return context
 
     def form_valid(self, form):
@@ -35,8 +39,8 @@ class ImageUpdateView(UpdateView):
         image_height = form.cleaned_data["image_height"]
         image = Image.objects.get(pk=self.kwargs['pk']).image_name
         resized = get_thumbnail(image, f"{image_width}x{image_height}")
-        image.save(image.name, ContentFile(resized.read()), True)
-        return super().form_valid(form)
+        image.save(Path(image.name).name, ContentFile(resized.read()), True)
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class ImageCreateView(CreateView):
