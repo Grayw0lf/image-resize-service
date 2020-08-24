@@ -1,5 +1,4 @@
 from pathlib import Path
-from django.core.files.base import ContentFile
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 from django.db import models
@@ -26,6 +25,6 @@ class Image(models.Model):
         return self.filename()
 
     def get_absolute_url(self):
-        return reverse('image_resize:image_detail', args=[self.pk])
+        return reverse('image_resize:image_update', args=[self.pk])
 
 

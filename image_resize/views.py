@@ -1,4 +1,4 @@
-import os
+from pathlib import Path
 from urllib.request import urlretrieve
 from sorl.thumbnail import get_thumbnail
 
@@ -6,9 +6,9 @@ from django.shortcuts import render, HttpResponseRedirect
 from django.urls import reverse
 from django.core.files import File
 from django.core.files.base import ContentFile
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView
 
-from .forms import ImageCreateForm, ImageResizeForm, ResizeForm
+from .forms import ImageCreateForm, ResizeForm
 from .models import Image
 
 
@@ -18,11 +18,11 @@ class ImageListView(ListView):
     template_name = 'image_resize/image_list.html'
 
 
-class ImageDetailView(UpdateView):
+class ImageUpdateView(UpdateView):
     model = Image
     form_class = ResizeForm
     context_object_name = 'image'
-    template_name = 'image_resize/image_detail.html'
+    template_name = 'image_resize/image_update.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -57,7 +57,7 @@ class ImageCreateView(CreateView):
             if image_url:
                 try:
                     result = urlretrieve(image_url)
-                    filename = os.path.basename(image_url)
+                    filename = Path(image_url).name
                     image_model.image_name.save(filename, File(open(result[0], 'rb')))
                     image_model.save()
                 except:
@@ -67,7 +67,7 @@ class ImageCreateView(CreateView):
             elif image_file:
                 image_model.image_name = form.cleaned_data["image_file"]
                 image_model.save()
-            return HttpResponseRedirect(reverse('image_resize:image_detail', args=(image_model.pk,)))
+            return HttpResponseRedirect(reverse('image_resize:image_update', args=(image_model.pk,)))
 
         context = {'ImageCreateForm': form}
         return render(request, 'image_resize/image_create.html', context)
