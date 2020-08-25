@@ -44,7 +44,7 @@ class ImageUpdateView(UpdateView):
             image_width = image.image_width
         if image_height is None:
             image_height = image.image_height
-        resized = get_thumbnail(image.image_name, f"{image_width}x{image_height}")
+        resized = get_thumbnail(image.image_name, f"{image_width}x{image_height}", quality=100)
         image.image_name.save(Path(image.image_name.name).name, ContentFile(resized.read()), True)
         return HttpResponseRedirect(reverse('image_resize:image_update', args=(image.pk,)))
 

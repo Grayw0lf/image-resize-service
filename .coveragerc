@@ -1,0 +1,5 @@
+[run]
+omit =
+    */ida_tst/*,
+    image_resize/tests/*,
+    manage.py
