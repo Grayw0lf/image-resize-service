@@ -26,7 +26,7 @@ class ImageUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        image = Image.objects.get(pk=self.kwargs['pk'])
+        image = self.get_object()
         width = image.image_width
         height = image.image_height
         context['ImageResizeForm'] = ResizeForm(initial={'image_width': width,
@@ -36,7 +36,7 @@ class ImageUpdateView(UpdateView):
     def form_valid(self, form):
         image_width = form.cleaned_data["image_width"]
         image_height = form.cleaned_data["image_height"]
-        image = Image.objects.get(pk=self.kwargs['pk'])
+        image = self.get_object()
         if (image_width is None and image_height is None) \
                 or (image_width == image.image_width and image_height == image.image_height):
             return HttpResponseRedirect(reverse('image_resize:image_update', args=(image.pk,)))
