@@ -1,5 +1,7 @@
 [run]
 omit =
-    */ida_tst/*,
-    image_resize/tests/*,
+    ida_tst/*,
+    venv/*,
+    *migrations/*,
+    *urls.py,
     manage.py
