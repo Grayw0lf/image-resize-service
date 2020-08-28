@@ -28,11 +28,7 @@ class Image(models.Model):
         return Path(self.image_name.name).name
 
     def __str__(self):
-        return self.image_name.name
-
-    def save(self, *args, **kwargs):
-        super(Image, self).save(*args, **kwargs)
-        # self.image_name.name = str(Path(self.image_name.name).parent/Path(self.image_original.name).name)
+        return self.filename()
 
     def get_absolute_url(self):
         return reverse('image_resize:image_update', args=[self.pk])

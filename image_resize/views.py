@@ -1,8 +1,10 @@
+import os
 from pathlib import Path
 from urllib.request import urlretrieve
 from sorl.thumbnail import get_thumbnail
 
 from django.shortcuts import render, HttpResponseRedirect
+from django.conf import settings
 from django.urls import reverse
 from django.core.files import File
 from django.core.files.base import ContentFile
@@ -78,7 +80,9 @@ class ImageCreateView(CreateView):
                 image_model.image_original = form.cleaned_data['image_file']
                 image_model.image_name = form.cleaned_data["image_file"]
                 image_model.save()
+                new_path = str(Path(image_model.image_name.name).parent / Path(image_model.image_original.name).name)
+                os.rename(os.path.join(settings.MEDIA_ROOT, image_model.image_name.name),
+                          os.path.join(settings.MEDIA_ROOT, new_path))
+                image_model.image_name.name = new_path
+                image_model.save()
             return HttpResponseRedirect(reverse('image_resize:image_update', args=(image_model.pk,)))
-
-        context = {'ImageCreateForm': form}
-        return render(request, 'image_resize/image_create.html', context)
