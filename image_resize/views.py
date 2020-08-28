@@ -71,10 +71,11 @@ class ImageCreateView(CreateView):
                     image_model.image_name.save(filename, File(open(result[0], 'rb')))
                     image_model.save()
                 except:
-                    err_mess = "В данной ссылке нет картинки"
+                    err_mess = "В данной ссылке нет изображения"
                     return render(request, 'image_resize/image_create.html',
                                   context={'ImageCreateForm': form, 'err_mess': err_mess})
             elif image_file:
+                image_model.image_original = form.cleaned_data['image_file']
                 image_model.image_name = form.cleaned_data["image_file"]
                 image_model.save()
             return HttpResponseRedirect(reverse('image_resize:image_update', args=(image_model.pk,)))
