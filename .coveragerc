@@ -2,6 +2,7 @@
 omit =
     ida_tst/*,
     venv/*,
+    */tests/*
     *migrations/*,
     *urls.py,
     manage.py
