@@ -1,6 +1,5 @@
 import pytest
 from image_resize.forms import ImageCreateForm, ResizeForm
-from image_resize.forms import ImageCreateForm
 
 
 @pytest.mark.image_create_form
