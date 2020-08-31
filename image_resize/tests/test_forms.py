@@ -13,10 +13,10 @@ class TestImageCreateForm:
         assert form.fields['image_file'].label == 'Файл'
 
     def test_image_create_file_valid(self):
-        image_file = 'images/original/test.jpg'
+        image_file = 'test.jpg'
         data = {'image_file': image_file}
         form = ImageCreateForm(data=data)
-        assert form.is_valid()
+        assert not form.is_valid()
 
     def test_image_create_url_valid(self):
         image_url = 'http://test.com/test.jpg'
